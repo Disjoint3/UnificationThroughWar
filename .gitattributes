@@ -1,0 +1,6 @@
+Assets/RawRes/Units/C_spearman/Model/Textures/Clothes_S.tga filter=lfs diff=lfs merge=lfs -text
+Assets/RawRes/Units/C_spearman/Model/Textures/Steel_D.tga filter=lfs diff=lfs merge=lfs -text
+Assets/RawRes/Units/C_spearman/Model/Textures/Steel_N.tga filter=lfs diff=lfs merge=lfs -text
+Assets/RawRes/Units/C_spearman/Model/Textures/Steel_S.tga filter=lfs diff=lfs merge=lfs -text
+Assets/RawRes/Units/C_spearman/Model/Textures/Clothes_D.tga filter=lfs diff=lfs merge=lfs -text
+Assets/RawRes/Units/C_spearman/Model/Textures/Clothes_N.tga filter=lfs diff=lfs merge=lfs -text
