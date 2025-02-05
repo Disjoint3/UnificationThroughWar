@@ -1,18 +1,20 @@
 using UnityEngine;
 
 /// <summary>
-/// 单例模式管理器（先暂时这么放、后续想想到底怎么处理比较好）
+/// 单例模式管理器（纯单例，只用于处理逻辑的。原则上不能直接用mono，实在需要就用MonoCore处理帧更新问题）
 /// </summary>
-public static class SingleMgr   //所有的单例直接在这个脚本注册
+public static class SingleMgr
 {
-    public static EventManager eventMgr = new EventManager();
+    public static EventController eventMgr = new EventController();
     public static BConectMgr bConectMgr = new BConectMgr();
     public static PoolManager poolMgr = new PoolManager();
     public static BPlayerManager danmuMgr = new BPlayerManager();
 
+    public static MonoController monoHelper = new MonoController();
+
 }
 /// <summary>
-/// 项目设置（先暂时这么放、后续想想到底怎么处理比较好）
+/// 项目设置（gamecontroller处理）
 /// </summary>
 public static class GameData
 {
@@ -22,16 +24,17 @@ public static class GameData
 }
 
 /// <summary>
-/// 项目使用到的全局UI（先暂时这么放、后续想想到底怎么处理比较好）
+/// 项目使用到的全局UI（gamecontroller处理）
 /// </summary>
 public static class GlobalUI
 {
     public static GameObject canvas;
     public static GameObject poolFather;
+    public static GameObject scriptObj;
 }
 
 /// <summary>
-/// 项目用到的资源地址（先暂时这么放、后续想想到底怎么处理比较好）
+/// 项目用到的资源地址（resmanager处理）
 /// </summary>
 public static class ResUrl
 {

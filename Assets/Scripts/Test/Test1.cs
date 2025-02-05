@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Test1 : BaseScript
+public class Test1 : BaseView
 {
     public GameObject prefab;
     private void Start()

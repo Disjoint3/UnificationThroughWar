@@ -12,6 +12,9 @@ public enum E_EventDef
  
     CONNECT_SUCESS, //
     CONNECT_FAILED,
+
+
+    RESOURCE_LOAD_SUCESS, //资源加载完毕
 }
 
 /// <summary>

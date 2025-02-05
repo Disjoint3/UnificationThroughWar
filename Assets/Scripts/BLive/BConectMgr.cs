@@ -8,7 +8,7 @@ using OpenBLive.Runtime.Data;
 using OpenBLive.Runtime.Utilities;
 using UnityEngine;
 
-public class BConectMgr
+public class BConectMgr:BaseMgr
 {
     private WebSocketBLiveClient m_WebSocketBLiveClient;
     private InteractivePlayHeartBeat m_PlayHeartBeat;

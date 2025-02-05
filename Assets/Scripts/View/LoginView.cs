@@ -25,12 +25,13 @@ public class LoginView : BaseView
     public int showHash;
     public int hideHash;
 
-    private void Start()
+    public void InitView()
     {
+        base.InitView();
         this.Initial();
     }
 
-    public override void UpdateEvent(E_EventDef eventDef)
+    public void UpdateEvent(E_EventDef eventDef)
     {
         base.UpdateEvent(eventDef);
         switch (eventDef)
@@ -123,7 +124,8 @@ public class LoginView : BaseView
 
     public void onClose()
     {
-        StartCoroutine(lateClose());
+        //StartCoroutine(lateClose());
+        MonoController.Instance.PlayCoroutineMono(lateClose());
     }
 
     IEnumerator lateClose()

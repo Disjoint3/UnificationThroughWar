@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class test2 :BaseScript
+public class test2 :BaseView
 {
-    public override void UpdateEvent(E_EventDef eventDef)
+    public void UpdateEvent(E_EventDef eventDef)
     {
         base.UpdateEvent(eventDef);
         switch (eventDef)
