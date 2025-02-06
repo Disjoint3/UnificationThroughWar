@@ -17,17 +17,17 @@ public class BConectMgr:BaseMgr
     public async void LinkStart(string code)
     {
         //测试的密钥
-        SignUtility.accessKeySecret = GameData.accessKeySecret;
+        SignUtility.accessKeySecret = gameDef.accessKeySecret;
         //测试的ID
-        SignUtility.accessKeyId = GameData.accessKeyId;
-        var ret = await BApi.StartInteractivePlay(code, GameData.appId);
+        SignUtility.accessKeyId = gameDef.accessKeyId;
+        var ret = await BApi.StartInteractivePlay(code, gameDef.appId);
         //打印到控制台日志
         var gameIdResObj = JsonConvert.DeserializeObject<AppStartInfo>(ret);
         if (gameIdResObj.Code != 0)
         {
             Debug.LogError(gameIdResObj.Message);
             //ConnectFailure?.Invoke();
-            SingleMgr.eventMgr.TriggerEvent(E_EventDef.CONNECT_FAILED);
+            IncludeMgr.eventMgr.TriggerEvent(E_EventDef.CONNECT_FAILED);
             return;
         }
         //长链接（用户持续接收服务器推送消息）
@@ -44,12 +44,12 @@ public class BConectMgr:BaseMgr
         try
         {
             m_WebSocketBLiveClient.Connect(TimeSpan.FromSeconds(1), 1000000);
-            SingleMgr.eventMgr.TriggerEvent(E_EventDef.CONNECT_SUCESS);
+            IncludeMgr.eventMgr.TriggerEvent(E_EventDef.CONNECT_SUCESS);
             Debug.Log("连接成功");
         }
         catch (Exception ex)
         {
-            SingleMgr.eventMgr.TriggerEvent(E_EventDef.CONNECT_FAILED);
+            IncludeMgr.eventMgr.TriggerEvent(E_EventDef.CONNECT_FAILED);
             Debug.Log("连接失败");
             throw;
         }
@@ -70,7 +70,7 @@ public class BConectMgr:BaseMgr
     {
         m_WebSocketBLiveClient.Dispose();
         m_PlayHeartBeat.Dispose();
-        await BApi.EndInteractivePlay(GameData.appId, gameId);
+        await BApi.EndInteractivePlay(gameDef.appId, gameId);
         Debug.Log("游戏关闭");
     }
     private static void M_WebSocketBLiveClient_OnLiveEnd(LiveEnd liveEnd)

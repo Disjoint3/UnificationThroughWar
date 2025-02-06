@@ -5,12 +5,32 @@ using UnityEngine.Events;
 /// <summary>
 /// 事件管理器
 /// </summary>
-public class EventController
+public class EventMgr
 {
     /// <summary>
     /// 直接交给事件管理器来运行的事件
     /// </summary>
     public Dictionary<E_EventDef, UnityAction> eventList = new Dictionary<E_EventDef, UnityAction>();
+
+    //public Dictionary<IBaseScript,IBaseScript> scripts = new Dictionary<IBaseScript, IBaseScript> ();
+
+    public List<IBaseScript> scripts = new List<IBaseScript>();
+
+    /// <summary>
+    /// 注册脚本进行来监听事件
+    /// </summary>
+    /// <param name="script"></param>
+    public void RegisterScript(IBaseScript script)
+    {
+        //this.scripts.Add(script, script);
+        this.scripts.Add(script);
+    }
+
+    public void UnRegisterScript(IBaseScript script)
+    {
+        //this.scripts.Remove(script);
+        this.scripts.Remove(script);
+    }
 
     /// <summary>
     /// 触发事件
@@ -18,12 +38,10 @@ public class EventController
     /// <param name="eventDef"></param>
     public void TriggerEvent(E_EventDef eventDef)
     {
-        for (int i = 0; i < MonoController.Instance._scripts.Count; i++)
+        foreach (IBaseScript sc in this.scripts)
         {
-            MonoController.Instance._scripts[i].UpdateEvent(eventDef);
+            sc.UpdateEvent(eventDef);
         }
-
-        //MonoCore.Instance.OnceMono(this.eventList[eventDef]);
         this.eventList[eventDef]?.Invoke();
     }
 
@@ -34,7 +52,7 @@ public class EventController
     {
         string str = "-----------事件系统debug输出-----------\n";
         int index = 0;
-        foreach (var item in MonoController.Instance._scripts)
+        foreach (IBaseScript item in this.scripts)
         {
             str += ++index + ": " + item.GetType().Name + "\n";
         }

@@ -37,10 +37,10 @@ public class LoginView : BaseView
         switch (eventDef)
         {
             case E_EventDef.LINK_SUCESS:
-                if (SingleMgr.bConectMgr != null) LinkSuccess();
+                if (IncludeMgr.bConectMgr != null) LinkSuccess();
                 break;
             case E_EventDef.LINK_FAILED:
-                if (SingleMgr.bConectMgr != null) LinkFailed();
+                if (IncludeMgr.bConectMgr != null) LinkFailed();
                 break;
         }
     }
@@ -118,14 +118,15 @@ public class LoginView : BaseView
     /// </summary>
     public void onStartToPlay()
     {
-        SingleMgr.bConectMgr?.LinkStart(idCode);
-        SingleMgr.eventMgr.TriggerEvent(E_EventDef.START_TO_PLAY);
+        IncludeMgr.bConectMgr?.LinkStart(idCode);
+        IncludeMgr.eventMgr.TriggerEvent(E_EventDef.START_TO_PLAY);
     }
 
     public void onClose()
     {
         //StartCoroutine(lateClose());
-        MonoController.Instance.PlayCoroutineMono(lateClose());
+        //MonoController.Instance.PlayCoroutineMono(lateClose());
+        IncludeCtl.mono.PlayCoroutineMono(lateClose());
     }
 
     IEnumerator lateClose()
@@ -153,7 +154,7 @@ public class LoginView : BaseView
         Debug.Log("连接成功");
 #endif
         Hide();
-        SingleMgr.eventMgr.TriggerEvent(E_EventDef.LINK_SUCESS);
+        IncludeMgr.eventMgr.TriggerEvent(E_EventDef.LINK_SUCESS);
     }
 
     /// <summary>

@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 游戏流程处理
+/// </summary>
 public class GameController : BaseMonoSingle<GameController>
 {
     [Header("项目设置（先暂时这么搞）")]
@@ -12,13 +15,10 @@ public class GameController : BaseMonoSingle<GameController>
 
     private void Awake()
     {
-
         //GlobalUI
-        GlobalUI.canvas = canvas;
-        GlobalUI.poolFather = Instantiate(new GameObject("poolFather"));
-        GlobalUI.scriptObj = Instantiate(new GameObject("scriptObj"));
-
-
+        GlobalDef.canvas = canvas;
+        GlobalDef.poolFather = Instantiate(new GameObject("poolFather"));
+        GlobalDef.scriptObj = Instantiate(new GameObject("scriptObj"));
 
     }
 }
@@ -30,4 +30,4 @@ public class GameController : BaseMonoSingle<GameController>
 //4.让MonoCore打开帧更新
 
 //游戏帧更新管理：
-//继承BaseScript的所有脚本，均为
+//继承BaseScript的所有脚本，脚本本身不用update这些帧更新，而用封装好的函数来处理。

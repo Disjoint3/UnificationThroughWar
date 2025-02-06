@@ -1,7 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 继承mono的单例基类
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class BaseMonoSingle<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
@@ -60,7 +62,7 @@ public class BaseMonoSingle<T> : MonoBehaviour where T : MonoBehaviour
                         GameObject singletonObj = new GameObject();
                         _instance = singletonObj.AddComponent<T>();
                         singletonObj.name = "[MonoSingle] " + typeof(T);
-                        singletonObj.transform.parent = GlobalUI.scriptObj.transform;
+                        singletonObj.transform.parent = GlobalDef.scriptObj.transform;
 
                         if (isGolbal && Application.isPlaying)
                         {

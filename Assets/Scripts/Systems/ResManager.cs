@@ -1,60 +1,98 @@
 using System;
 using System.Collections;
-using System.Net.Mail;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 
+/// <summary>
+/// 资源管理器
+/// </summary>
 public class ResManager: BaseMgr
 {
+    private Dictionary<E_ResUrl,object> _resDic = new Dictionary<E_ResUrl, object>();
+
+    private int _loadedCnt = 0;
+
+    /// <summary>
+    /// 加载全部注册的资源
+    /// </summary>
+    public void LoadAllResources()
+    {
+        this._loadedCnt = 0;
+        this.LoadResourceAsync();
+    }
+
     /// <summary>
     /// 异步加载资源
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <param name="path">资源路径（写到ResUrl枚举中)</param>
     /// <param name="onLoadComplete"></param>
     /// <param name="showProgress">是否展示进度条</param>
     /// <param name="progressBar">进度条样式（继承IProgressBar接口）</param>
-    public void LoadResourceAsync<T>(string path, UnityAction<T> onLoadComplete, bool showProgress = false, IProgressBar progressBar = null) where T : UnityEngine.Object
+    private void LoadResourceAsync(UnityAction onLoadComplete = null, bool showProgress = false, IProgressBar progressBar = null)
     {
         //StartCoroutine(LoadResourceCoroutine(path, onLoadComplete, showProgress, progressBar));
-        MonoController.Instance.PlayCoroutineMono(LoadResourceCoroutine(path, onLoadComplete, showProgress, progressBar));
+        //MonoController.Instance.PlayCoroutineMono(LoadResourcesAsync(onLoadComplete, showProgress, progressBar));
+        IncludeCtl.mono.PlayCoroutineMono(LoadResourcesAsync(onLoadComplete, showProgress, progressBar));
     }
 
-    /// <summary>
-    /// 加载资源
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="path"></param>
-    /// <param name="onLoadComplete"></param>
-    /// <param name="showProgress"></param>
-    /// <param name="progressBar"></param>
-    /// <returns></returns>
-    private IEnumerator LoadResourceCoroutine<T>(string path, UnityAction<T> onLoadComplete, bool showProgress, IProgressBar progressBar) where T : UnityEngine.Object
+    private IEnumerator LoadResourcesAsync(UnityAction onLoadComplete, bool showProgress = false, IProgressBar progressBar = null)
     {
-        // 创建异步加载请求
-        ResourceRequest request = Resources.LoadAsync<T>(path);
-
-        // 显示进度条（如果需要）
-        if (showProgress && progressBar != null)
+        List<string> urlList = new List<string>();
+        foreach (E_ResUrl item in Enum.GetValues(typeof(E_ResUrl)))
         {
+            urlList.Add(item.GetValue());
+        }
+
+        foreach (string path in urlList)
+        {
+            ResourceRequest request = Resources.LoadAsync(path);
+            request.completed += (AsyncOperation op) =>
+            {
+                this._loadedCnt++;
+                if (showProgress)
+                {
+                    UpdateProgress(progressBar);
+                }
+                if (this._loadedCnt == urlList.Count)
+                {
+                    onLoadComplete?.Invoke(); // 调用加载完成事件
+                }
+            };
+
             while (!request.isDone)
             {
-                progressBar.fillAmount = request.progress;
+                if (showProgress)
+                {
+                    UpdateProgress(progressBar);
+                }
                 yield return null;
             }
         }
+    }
 
-        // 加载完成
-        if (request.asset != null)
+    private void UpdateProgress(IProgressBar progressBar)
+    {
+        progressBar.fillAmount = (float)this._loadedCnt / (float)this._resDic.Count;
+    }
+
+    /// <summary>
+    /// 获取资源
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="resourceType">资源标识</param>
+    /// <returns></returns>
+    public T GetResource<T>(E_ResUrl resourceType) where T : class
+    {
+        object res = null;
+        this._resDic.TryGetValue(resourceType, out res);
+#if UNITY_EDITOR
+        if (!(res is T))
         {
-            onLoadComplete?.Invoke(request.asset as T);
+            Debug.Log("[ResManager: ] res is not " + typeof(T).Name);
         }
-        else
-        {
-            Debug.LogError("Failed to load resource: " + path);
-        }
+#endif
+        return res as T;
     }
 }
 
@@ -70,28 +108,3 @@ public interface IProgressBar
 
     public void SetValue() { }
 }
-
-//public class ResourceLoaderExample : MonoBehaviour
-//{
-//    public Image progressBar; // 指定进度条UI
-
-//    void Start()
-//    {
-//        // 异步加载一个预制体
-//        ResourceManager.Instance.LoadResourceAsync<GameObject>("Prefabs/MyPrefab", OnLoadComplete, true, progressBar);
-//    }
-
-//    private void OnLoadComplete(GameObject obj)
-//    {
-//        if (obj != null)
-//        {
-//            Debug.Log("Resource loaded successfully!");
-//            // 在场景中实例化加载的预制体
-//            Instantiate(obj);
-//        }
-//        else
-//        {
-//            Debug.LogError("Failed to load resource.");
-//        }
-//    }
-//}

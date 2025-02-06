@@ -17,7 +17,7 @@ public class test2 :BaseView
 
     void Start()
     {
-        SingleMgr.eventMgr.printScripts();
+        IncludeMgr.eventMgr.printScripts();
     }
 
     // Update is called once per frame
