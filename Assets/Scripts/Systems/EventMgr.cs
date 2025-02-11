@@ -14,6 +14,7 @@ public class EventMgr
 
     //public Dictionary<IBaseScript,IBaseScript> scripts = new Dictionary<IBaseScript, IBaseScript> ();
 
+    //注册在案 需要使用时间系统的脚本们
     public List<IBaseScript> scripts = new List<IBaseScript>();
 
     /// <summary>

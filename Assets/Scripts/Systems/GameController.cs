@@ -13,6 +13,7 @@ public class GameController : BaseMonoSingle<GameController>
     //public string accessKeyId;
     //public string appId;
 
+
     private void Awake()
     {
         //GlobalUI

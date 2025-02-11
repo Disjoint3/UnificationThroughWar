@@ -62,6 +62,10 @@ public class BaseMonoSingle<T> : MonoBehaviour where T : MonoBehaviour
                         GameObject singletonObj = new GameObject();
                         _instance = singletonObj.AddComponent<T>();
                         singletonObj.name = "[MonoSingle] " + typeof(T);
+                        if (GlobalDef.scriptObj == null)
+                        {
+
+                        }
                         singletonObj.transform.parent = GlobalDef.scriptObj.transform;
 
                         if (isGolbal && Application.isPlaying)

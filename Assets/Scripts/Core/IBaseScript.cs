@@ -3,23 +3,36 @@ public interface IBaseScript:IEventListen
     /// <summary>
     /// 代替原先的构造函数使用，构造时运行一次。
     /// </summary>
-    public void Construct(params object[] args);
+    public void Construct();
 
-    public void InitData(params object[] args);
+    public void InitData();
 
-    public void InitView(params object[] args);
+    public void InitView();
 
-    public void UpdateData(params object[] args);
+    public void UpdateData();
 
-    public void UpdateView(params object[] args);
+    public void UpdateView();
 
-    public void FixUpdate(params object[] args);
+    public void FixUpdate();
+
+    //public void Construct(params object[] args);
+
+    //public void InitData(params object[] args);
+
+    //public void InitView(params object[] args);
+
+    //public void UpdateData(params object[] args);
+
+    //public void UpdateView(params object[] args);
+
+    //public void FixUpdate(params object[] args);
+    //public void PreDestroy(params object[] args);
 
     /// <summary>
     /// 销毁前执行，然后销毁
     /// </summary>
     /// <param name="args"></param>
-    public void PreDestroy(params object[] args);
+    public void PreDestroy();
 }
 
 //Construct，代替原先的构造函数使用，构造时运行一次。
